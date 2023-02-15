@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.Services.*;
+
 import java.net.*;
 import java.io.*;
 import java.util.HashMap;
@@ -12,8 +14,15 @@ public class HttpServer {
 
     private static HttpServer _instance = new HttpServer();
     private Map<String, RESTService> services = new HashMap<>();
+    private String requestedMethod = "";
 
-    private HttpServer (){}
+    private HttpServer (){
+        addService("/prueba.html", new HTMLService());
+        addService("/prueba.js", new JsService());
+        addService("/prueba.img", new IMGService());
+        addService("/prueba.css", new CssService());
+        addService("/error404.html", new Error404());
+    }
 
     /**
      * Retorna la instancia del HTTPServer
@@ -58,6 +67,7 @@ public class HttpServer {
             String request = "/simple";
             while ((inputLine = in.readLine()) != null) {
                 if (first_line) {
+                    requestedMethod = inputLine.split(" ")[0];
                     request = inputLine.split(" ")[1];
                     first_line = false;
                 }
@@ -67,9 +77,11 @@ public class HttpServer {
                 }
             }
             if (request.startsWith("/apps/")) {
-                outputLine = executeService(request.substring(5));
-            } else {
+                outputLine = get(request.substring(5));
+            } else if (request.equals("/")){
                 outputLine = htmlGetForm();
+            } else {
+                outputLine = get("/error404.html");
             }
             out.println(outputLine);
             out.close();
@@ -77,6 +89,14 @@ public class HttpServer {
             clientSocket.close();
         }
         serverSocket.close();
+    }
+
+    public String getRequestedMethod(){
+        return this.requestedMethod;
+    }
+
+    public String get(String serviceName) throws IOException {
+        return executeService(serviceName);
     }
 
     /**
@@ -116,6 +136,7 @@ public class HttpServer {
             String body = rs.getResponse();
             return header + body;
         } catch (Exception e){
+            System.out.println(services.get("/error404.html"));
             RESTService rs = services.get("/error404.html");
             String header = rs.getHeader();
             String body = rs.getResponse();
