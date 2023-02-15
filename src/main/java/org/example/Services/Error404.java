@@ -11,6 +11,7 @@ import java.nio.file.Paths;
  * Servicio que retorna la pantalla de error
  */
 public class Error404 implements RESTService {
+    private String type = "text/html";
 
     /**
      * Header de la pagina de error
@@ -19,7 +20,7 @@ public class Error404 implements RESTService {
     @Override
     public String getHeader() {
         return "HTTP/1.1 200 OK\r\n" +
-                "Content-type: text/html\r\n" +
+                "Content-type: " + type +"\r\n" +
                 "\r\n";
     }
 
@@ -34,5 +35,10 @@ public class Error404 implements RESTService {
         byte[] fileArray = Files.readAllBytes(file);
 
         return new String(fileArray);
+    }
+
+    @Override
+    public void type(String type) {
+        this.type = type;
     }
 }

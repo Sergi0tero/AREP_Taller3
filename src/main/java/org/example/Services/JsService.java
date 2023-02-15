@@ -11,6 +11,7 @@ import java.nio.file.Paths;
  * Servicio que retorna un archivo JavaScript
  */
 public class JsService implements RESTService {
+    private String type = "application/javascript";
 
     /**
      * Header del archivo JavaScript
@@ -19,7 +20,7 @@ public class JsService implements RESTService {
     @Override
     public String getHeader() {
         return "HTTP/1.1 200 OK\r\n" +
-                "Content-type: application/javascript\r\n" +
+                "Content-type: " + type +"\r\n" +
                 "\r\n";
     }
 
@@ -34,5 +35,10 @@ public class JsService implements RESTService {
         byte[] fileArray = Files.readAllBytes(file);
 
         return new String(fileArray);
+    }
+
+    @Override
+    public void type(String type) {
+        this.type = type;
     }
 }

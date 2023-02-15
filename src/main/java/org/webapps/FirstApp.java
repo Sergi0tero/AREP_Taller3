@@ -2,6 +2,7 @@ package org.webapps;
 
 import org.example.HttpServer;
 import org.example.Services.*;
+import org.spark.Spark;
 
 import java.io.IOException;
 
@@ -16,6 +17,7 @@ public class FirstApp {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
+        Spark spark = new Spark();
         HttpServer server = HttpServer.getInstance();
         server.addService("/prueba.html", new HTMLService());
         server.addService("/prueba.js", new JsService());

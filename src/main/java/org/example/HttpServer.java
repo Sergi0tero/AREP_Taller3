@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.Services.*;
+import org.spark.Spark;
 
 import java.net.*;
 import java.io.*;
@@ -13,10 +13,10 @@ import java.util.Map;
 public class HttpServer {
 
     private static HttpServer _instance = new HttpServer();
-    private Map<String, RequestMethod> methods = new HashMap<>();
     private Map<String, RESTService> services = new HashMap<>();
 
-    private HttpServer (){}
+    private HttpServer (){
+    }
 
     /**
      * Retorna la instancia del HTTPServer
@@ -32,6 +32,7 @@ public class HttpServer {
      * @throws IOException
      */
     public void run(String[] args) throws IOException {
+        Spark spark = new Spark();
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(35000);
@@ -59,11 +60,8 @@ public class HttpServer {
 
             boolean first_line = true;
             String request = "/simple";
-            String requestedMethod = "";
             while ((inputLine = in.readLine()) != null) {
-
                 if (first_line) {
-                    requestedMethod = inputLine.split(" ")[0];
                     request = inputLine.split(" ")[1];
                     first_line = false;
                 }
@@ -73,13 +71,29 @@ public class HttpServer {
                 }
             }
             if (request.startsWith("/apps/")) {
-                outputLine = methods.get(requestedMethod).runMethod(request.substring(5));
+                String path = request.substring(5);
+                outputLine = spark.get(services.get(path), (req, res) -> {
+                    try{
+                        String header = res.getHeader();
+                        String body = res.getResponse();
+                        return header + body;
+                    } catch (Exception e){
+                        RESTService rs = services.get("/error404.html");
+                        String header = rs.getHeader();
+                        String body = rs.getResponse();
+                        return header + body;
+                    }
+                });
             }
             else if (request.equals("/")){
                 outputLine = htmlGetForm();
             } else {
-                outputLine = methods.get(requestedMethod).runMethod(request.substring(5));
-                outputLine = get("/error404.html");
+                outputLine = get(request.substring(5));
+                outputLine = spark.get(services.get("/error404.html"), (req, res) -> {
+                    String header = res.getHeader();
+                    String body = res.getResponse();
+                    return header + body;
+                });
             }
             out.println(outputLine);
             out.close();
@@ -89,8 +103,8 @@ public class HttpServer {
         serverSocket.close();
     }
 
-    public String get(String serviceName) throws IOException {
-        return executeService(serviceName);
+    public String get(String path) throws IOException {
+        return executeService(path);
     }
 
     /**
@@ -124,29 +138,13 @@ public class HttpServer {
      * @throws IOException
      */
     private String executeService(String serviceName) throws IOException {
-        try{
-            RESTService rs = services.get(serviceName);
-            String header = rs.getHeader();
-            String body = rs.getResponse();
-            return header + body;
-        } catch (Exception e){
-            RESTService rs = services.get("/error404.html");
-            String header = rs.getHeader();
-            String body = rs.getResponse();
-            return header + body;
-        }
+        RESTService rs = services.get("/error404.html");
+        String header = rs.getHeader();
+        String body = rs.getResponse();
+        return header + body;
     }
 
-    /**
-     * Añade los servicios al arreglo
-     * @param key nombre del nuevo servicio
-     * @param service Servicio creado
-     */
     public void addService(String key, RESTService service) {
         services.put(key, service);
-    }
-
-    public void addMethods(String key, RequestMethod method) {
-        methods.put(key, method);
     }
 }

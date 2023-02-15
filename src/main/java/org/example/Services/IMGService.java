@@ -11,6 +11,7 @@ import java.nio.file.Paths;
  * Servicio que retorna un archivo de imagen
  */
 public class IMGService implements RESTService {
+    private String type = "image/jpg";
 
     /**
      * Header del archivo de imagen, en este caso jpg
@@ -19,7 +20,7 @@ public class IMGService implements RESTService {
     @Override
     public String getHeader() {
         return "HTTP/1.1 200 OK\r\n" +
-                "Content-type: image/jpg\r\n" +
+                "Content-type: " + type +"\r\n" +
                 "\r\n";
     }
 
@@ -33,5 +34,10 @@ public class IMGService implements RESTService {
         byte[] fileArray = Files.readAllBytes(file);
 
         return new String(fileArray);
+    }
+
+    @Override
+    public void type(String type) {
+        this.type = type;
     }
 }

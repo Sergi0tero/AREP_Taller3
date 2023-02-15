@@ -19,4 +19,6 @@ public interface RESTService {
      * @throws IOException
      */
     public String getResponse() throws IOException;
+
+    public void type(String type);
 }

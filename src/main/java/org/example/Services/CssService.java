@@ -11,6 +11,7 @@ import java.nio.file.Paths;
  * Servicio que retorna un archivo CSS
  */
 public class CssService implements RESTService {
+    private String type = "text/css";
 
     /**
      * Header del archivo Css
@@ -19,7 +20,7 @@ public class CssService implements RESTService {
     @Override
     public String getHeader() {
         return "HTTP/1.1 200 OK\r\n" +
-                "Content-type: text/css\r\n" +
+                "Content-type: " + type +"\r\n" +
                 "\r\n";
     }
 
@@ -33,5 +34,10 @@ public class CssService implements RESTService {
         byte[] fileArray = Files.readAllBytes(file);
 
         return new String(fileArray);
+    }
+
+    @Override
+    public void type(String type) {
+        this.type = type;
     }
 }
