@@ -1,26 +1,30 @@
 package org.example;
 
 
+import org.example.Services.*;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 
 public class Spark {
-    interface RequestedMethod{
-        String runMethod(String getFile);
-    }
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.getInstance();
-        server.run(args);
-        System.out.println("fsdafasdf");
-        RequestedMethod getMethod = (getFile) -> {
+        RequestMethod getMethod = (getFile) -> {
             try {
                 return server.get(getFile);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         };
-        System.out.println("prueba" + getMethod.runMethod("/apps/prueba.html"));
+        server.addMethods("GET", getMethod);
+
+        server.addService("/prueba.html", new HTMLService());
+        server.addService("/prueba.js", new JsService());
+        server.addService("/prueba.img", new IMGService());
+        server.addService("/prueba.css", new CssService());
+        server.addService("/error404.html", new Error404());
+        server.run(args);
 //        server.createContext("/api/greeting", (exchange -> {
 //
 //            if ("GET".equals(exchange.getRequestMethod())) {

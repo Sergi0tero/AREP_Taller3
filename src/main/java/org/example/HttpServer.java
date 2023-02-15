@@ -13,16 +13,10 @@ import java.util.Map;
 public class HttpServer {
 
     private static HttpServer _instance = new HttpServer();
+    private Map<String, RequestMethod> methods = new HashMap<>();
     private Map<String, RESTService> services = new HashMap<>();
-    private String requestedMethod = "";
 
-    private HttpServer (){
-        addService("/prueba.html", new HTMLService());
-        addService("/prueba.js", new JsService());
-        addService("/prueba.img", new IMGService());
-        addService("/prueba.css", new CssService());
-        addService("/error404.html", new Error404());
-    }
+    private HttpServer (){}
 
     /**
      * Retorna la instancia del HTTPServer
@@ -65,7 +59,9 @@ public class HttpServer {
 
             boolean first_line = true;
             String request = "/simple";
+            String requestedMethod = "";
             while ((inputLine = in.readLine()) != null) {
+
                 if (first_line) {
                     requestedMethod = inputLine.split(" ")[0];
                     request = inputLine.split(" ")[1];
@@ -77,10 +73,12 @@ public class HttpServer {
                 }
             }
             if (request.startsWith("/apps/")) {
-                outputLine = get(request.substring(5));
-            } else if (request.equals("/")){
+                outputLine = methods.get(requestedMethod).runMethod(request.substring(5));
+            }
+            else if (request.equals("/")){
                 outputLine = htmlGetForm();
             } else {
+                outputLine = methods.get(requestedMethod).runMethod(request.substring(5));
                 outputLine = get("/error404.html");
             }
             out.println(outputLine);
@@ -89,10 +87,6 @@ public class HttpServer {
             clientSocket.close();
         }
         serverSocket.close();
-    }
-
-    public String getRequestedMethod(){
-        return this.requestedMethod;
     }
 
     public String get(String serviceName) throws IOException {
@@ -136,7 +130,6 @@ public class HttpServer {
             String body = rs.getResponse();
             return header + body;
         } catch (Exception e){
-            System.out.println(services.get("/error404.html"));
             RESTService rs = services.get("/error404.html");
             String header = rs.getHeader();
             String body = rs.getResponse();
@@ -151,4 +144,9 @@ public class HttpServer {
      */
     public void addService(String key, RESTService service) {
         services.put(key, service);
-    }}
+    }
+
+    public void addMethods(String key, RequestMethod method) {
+        methods.put(key, method);
+    }
+}
