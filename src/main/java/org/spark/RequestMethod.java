@@ -5,5 +5,5 @@ import org.example.RESTService;
 import java.io.IOException;
 
 public interface RequestMethod{
-    String runMethod(Request req, RESTService res) throws IOException;
+    String runMethod(Request req, Response res) throws IOException;
 }

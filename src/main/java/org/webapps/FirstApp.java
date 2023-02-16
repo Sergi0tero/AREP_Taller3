@@ -1,7 +1,10 @@
 package org.webapps;
 
 import org.example.HttpServer;
+import org.example.RESTService;
 import org.example.Services.*;
+import org.spark.RequestMethod;
+import org.spark.Response;
 import org.spark.Spark;
 
 import java.io.IOException;
@@ -19,11 +22,23 @@ public class FirstApp {
     public static void main(String[] args) throws IOException {
         Spark spark = new Spark();
         HttpServer server = HttpServer.getInstance();
-        server.addService("/prueba.html", new HTMLService());
-        server.addService("/prueba.js", new JsService());
-        server.addService("/prueba.img", new IMGService());
-        server.addService("/prueba.css", new CssService());
-        server.addService("/error404.html", new Error404());
+        RequestMethod get = (req, res) -> {
+            try{
+                res.type("text/html");
+                String header = res.getHeader();
+                String body = res.getResponse();
+                return header + body;
+            } catch (Exception e){
+                Response rs = new Response("/error404.html");
+                String header = rs.getHeader();
+                String body = rs.getResponse();
+                return header + body;
+            }
+        };
+        RequestMethod post = (req, res) -> {
+
+        };
+        server.createContext("GET", get);
         server.run(args);
     }
 }

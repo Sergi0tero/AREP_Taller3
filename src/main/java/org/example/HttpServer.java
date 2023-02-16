@@ -1,5 +1,6 @@
 package org.example;
 
+import org.spark.RequestMethod;
 import org.spark.Spark;
 
 import java.net.*;
@@ -13,7 +14,7 @@ import java.util.Map;
 public class HttpServer {
 
     private static HttpServer _instance = new HttpServer();
-    private Map<String, RESTService> services = new HashMap<>();
+    private Map<String, RequestMethod> methods = new HashMap<>();
 
     private HttpServer (){
     }
@@ -70,30 +71,13 @@ public class HttpServer {
                     break;
                 }
             }
-            if (request.startsWith("/apps/")) {
-                String path = request.substring(5);
-                outputLine = spark.get(services.get(path), (req, res) -> {
-                    try{
-                        String header = res.getHeader();
-                        String body = res.getResponse();
-                        return header + body;
-                    } catch (Exception e){
-                        RESTService rs = services.get("/error404.html");
-                        String header = rs.getHeader();
-                        String body = rs.getResponse();
-                        return header + body;
-                    }
-                });
-            }
-            else if (request.equals("/")){
+            if (request.equals("/")){
                 outputLine = htmlGetForm();
+            } else if (request.startsWith("/apps/")){
+                outputLine = spark.get(request.substring(5), methods.get("GET"));
+                System.out.println("entro error");
             } else {
-                outputLine = get(request.substring(5));
-                outputLine = spark.get(services.get("/error404.html"), (req, res) -> {
-                    String header = res.getHeader();
-                    String body = res.getResponse();
-                    return header + body;
-                });
+                outputLine = spark.get("/error404.html", methods.get("GET"));
             }
             out.println(outputLine);
             out.close();
@@ -103,8 +87,8 @@ public class HttpServer {
         serverSocket.close();
     }
 
-    public String get(String path) throws IOException {
-        return executeService(path);
+    public void createContext(String verb, RequestMethod method){
+        methods.put(verb, method);
     }
 
     /**
@@ -129,22 +113,5 @@ public class HttpServer {
                 "    </body>\n" +
                 "</html>";
 
-    }
-
-    /**
-     * Buca y retorna el servicio solicitado por la URL, de no encontrarse salta la pantalla de error
-     * @param serviceName nombre del servicio
-     * @return Archivo solicitado
-     * @throws IOException
-     */
-    private String executeService(String serviceName) throws IOException {
-        RESTService rs = services.get("/error404.html");
-        String header = rs.getHeader();
-        String body = rs.getResponse();
-        return header + body;
-    }
-
-    public void addService(String key, RESTService service) {
-        services.put(key, service);
     }
 }
