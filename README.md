@@ -7,7 +7,7 @@ En este taller se hace la creacion de una API sin uso de librerias, extendiendo 
 ## Funcionamiento:
 La aplicacion se inicia con el URL de localhost:35000, para navegar entre los distintos archivos se debe agregar los urls mostrados en la pantalla inicial.
 
-Para poder cambiar el tipo de cada respuesta HTTP, se creo una funcion ```type()``` dentro de la clase Response, en un inicio todos los archivos se retornan como tipy HTML, esto se puese cambiar facilmente con esta funcion. Ademas de que se creo una variable directory con su respectiva funcion ```setDirectory()```, el cual permite realizar el cambio del directorio del que se quieren sacar los archivos estaticos
+Para poder cambiar el tipo de cada respuesta HTTP, se creo una funcion ```type()``` dentro de la clase Response, en un inicio todos los archivos se retornan como tipy HTML, esto se puese cambiar facilmente con esta funcion. Ademas de que se creo una variable directory con su respectiva funcion ```setDirectory()```, el cual permite realizar el cambio del directorio del que se quieren sacar los archivos estaticos.
 
 ## Prerrequisitos
 - GIT
