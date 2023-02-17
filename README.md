@@ -47,10 +47,10 @@ Estas son las diferentes capaz que podemos ver:
 - Servidor
 
 ## Pruebas
-- ### Metodo GET:
+- ##### Metodo GET:
 ![image](https://user-images.githubusercontent.com/98189066/219531825-51a1ae9f-1b7b-4440-8883-2a77f4d84130.png)
 
-- ### Metodo POST:
+- ##### Metodo POST:
 ![image](https://user-images.githubusercontent.com/98189066/219531463-935067ba-2e49-403b-be03-61ba4dd196d5.png)
 
 
