@@ -36,6 +36,10 @@ mvn compile
 ```
 mvn exec:java
 ```
+o
+```
+java -cp target/classes org.arep.webapps.WebApp
+```
 
 ## Diseño
 El proyecto fue realizado en Java. El ciclo de vida empieza por el usuario, quien, usando las opciones dadas en el inicio, elige el archivo que desee. Continua con el servidor redirecciona dependiendo del servicio elegido.
