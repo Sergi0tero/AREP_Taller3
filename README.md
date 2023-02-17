@@ -1,7 +1,7 @@
 ## Autor:
 ### Sergio Andrés Otero Herrera
 
-# Taller 2 AREP
+# Taller 3 AREP
 En este taller se hace la creacion de una API sin uso de librerias, se realizan consultas de distintos tipos de archivos.
 
 ## Funcionamiento
@@ -18,7 +18,7 @@ De querer usar este codigo, se tiene que hacer lo siguiente:
 Se clona el repositorio
 
 ```
-git clone [https://github.com/judibec/Taller_1_AREP.git](https://github.com/Sergi0tero/Taller2_AREP.git)
+git clone https://github.com/Sergi0tero/AREP_Taller3.git
 ```
 
 Ahora, si queremos verificar la integridad del codigo
@@ -43,6 +43,7 @@ Este servicio lee el archivo seleccionado en una direccion especificada. Retorna
 ## Modular
 Estas son las diferentes capaz que podemos ver:
 - Servicios
+- Spark
 - Servidor
 
 ## Pruebas
