@@ -1,4 +1,4 @@
-package org.example;
+package org.Http;
 
 import org.spark.RequestMethod;
 import org.spark.Spark;
@@ -17,6 +17,9 @@ public class HttpServer {
     private static HttpServer _instance = new HttpServer();
     private Map<String, RequestMethod> methods = new HashMap<>();
 
+    /**
+     * Constructor del servidor
+     */
     private HttpServer (){
     }
 
@@ -100,6 +103,11 @@ public class HttpServer {
         serverSocket.close();
     }
 
+    /**
+     * Añade funciones lambda de cada tipo de peticion HTTP
+     * @param verb Tipo de peticion HTTP
+     * @param method funcion lambda correspondiente al verbo
+     */
     public void createContext(String verb, RequestMethod method){
         methods.put(verb, method);
     }
@@ -122,7 +130,7 @@ public class HttpServer {
                 "    <body>\n" +
                 "        <h1>New API REST</h1>\n" +
                 "        <h2>Available links:</h2>\n" +
-                "        <ul> <li> /apps/html </li>  <li> /apps/js </li>  <li> /apps/img </li>  <li> /apps/css </li> </ul>\n" +
+                "        <ul> <li> /apps/prueba.html </li>  <li> /apps/prueba.js </li>  <li> /apps/prueba.jpg </li>  <li> /apps/prueba.css </li> </ul>\n" +
                 "    </body>\n" +
                 "</html>";
 

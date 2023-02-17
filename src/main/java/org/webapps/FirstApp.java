@@ -1,8 +1,6 @@
 package org.webapps;
 
-import org.example.HttpServer;
-import org.example.RESTService;
-import org.example.Services.*;
+import org.Http.HttpServer;
 import org.spark.RequestMethod;
 import org.spark.Response;
 import org.spark.Spark;
@@ -15,7 +13,7 @@ import java.io.IOException;
 public class FirstApp {
 
     /**
-     * añade los servicios al servidor
+     * Crea los lambda de cada tipo de peticion e inicia el servidor
      * @param args
      * @throws IOException
      */
@@ -29,16 +27,19 @@ public class FirstApp {
                 String body = res.getResponse();
                 return header + body;
             } catch (Exception e){
-                Response rs = new Response("/error404.html");
+                Response rs = new Response("/error404.html", "GET");
+                rs.type("text/html");
                 String header = rs.getHeader();
                 String body = rs.getResponse();
                 return header + body;
             }
         };
         RequestMethod post = (req, res) -> {
-
+            res.type("application/json");
+            return res.getHeader() + res.getResponse();
         };
         server.createContext("GET", get);
+        server.createContext("POST", post);
         server.run(args);
     }
 }
