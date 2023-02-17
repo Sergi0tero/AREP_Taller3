@@ -26,7 +26,7 @@ Ahora, si queremos verificar la integridad del codigo
 ```
 mvn package
 ```
-## Correr el código:
+## Correr el código
 Para correr la clase main, la cual se encuentra en FirstApp.java, corremos el siguiente comando en la terminal:
 
 ```
@@ -35,7 +35,7 @@ mvn exec:java
 
 ## Diseño
 El proyecto fue realizado en Java. El ciclo de vida empieza por el usuario, quien, usando las opciones dadas en el inicio, elige el archivo que desee. Continua con el servidor redirecciona dependiendo del servicio elegido.
-Este servicio lee el archivo seleccionado en una direccion especificada. Retornando asi el archivo y mostrandolo en pantalla.
+Este servicio lee el archivo seleccionado en una direccion especificada. Llama a nuestra nueva clase Spark, la cual utiliza una funcion lambda anteriormente creada para saber que peticion HTTP esta haciendo el usuario (Actualmente implementadas estan el GET y el POST, se recomienda POSTMAN para usar el POST)
 
 ## Patrones
 - Singleton
@@ -47,7 +47,12 @@ Estas son las diferentes capaz que podemos ver:
 - Servidor
 
 ## Pruebas
-No se realizaron pruebas para este codigo. Pero se puede verifcar el funcionamiento comparando los archivos dentro del directorio "resources" con lo que retorna la API
+- ### Metodo GET:
+![image](https://user-images.githubusercontent.com/98189066/219531825-51a1ae9f-1b7b-4440-8883-2a77f4d84130.png)
+
+- ### Metodo POST:
+![image](https://user-images.githubusercontent.com/98189066/219531463-935067ba-2e49-403b-be03-61ba4dd196d5.png)
+
 
 ## Version
 1.0
