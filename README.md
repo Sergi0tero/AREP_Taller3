@@ -1,10 +1,10 @@
 ## Autor:
 ### Sergio Andrés Otero Herrera
 
-# Taller 3 AREP
-En este taller se hace la creacion de una API sin uso de librerias, se realizan consultas de distintos tipos de archivos.
+# Taller 3 AREP:
+En este taller se hace la creacion de una API sin uso de librerias, extendiendo el uso ahora a una simulacion de Spark.
 
-## Funcionamiento
+## Funcionamiento:
 La aplicacion se inicia con el URL de localhost:35000, para navegar entre los distintos archivos se debe agregar los urls mostrados en la pantalla inicial.
 
 ## Prerrequisitos
