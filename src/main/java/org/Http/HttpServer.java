@@ -7,6 +7,7 @@ import java.net.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Servidor HTTP encargado de tomar y procesar las peticiones
@@ -61,9 +62,11 @@ public class HttpServer {
 
             boolean first_line = true;
             String request = "/simple";
+            String reqVerb = "";
             while ((inputLine = in.readLine()) != null) {
                 if (first_line) {
                     request = inputLine.split(" ")[1];
+                    reqVerb =  inputLine.split(" ")[0];
                     first_line = false;
                 }
                 System.out.println("Received: " + inputLine);
@@ -71,13 +74,23 @@ public class HttpServer {
                     break;
                 }
             }
-            if (request.equals("/")){
-                outputLine = htmlGetForm();
-            } else if (request.startsWith("/apps/")){
-                outputLine = spark.get(request.substring(5), methods.get("GET"));
-                System.out.println("entro error");
-            } else {
-                outputLine = spark.get("/error404.html", methods.get("GET"));
+            outputLine = htmlGetForm();
+            if (Objects.equals(reqVerb, "GET")){
+                if (request.equals("/")){
+                    outputLine = htmlGetForm();
+                } else if (request.startsWith("/apps/")){
+                    outputLine = spark.get(request.substring(5), methods.get("GET"));
+                    System.out.println("entro error");
+                } else {
+                    outputLine = spark.get("/error404.html", methods.get("GET"));
+                }
+            } else if (Objects.equals(reqVerb, "POST")){
+                if (request.startsWith("/apps/")){
+                    outputLine = spark.post(request.substring(7), methods.get("POST"));
+                } else {
+                    System.out.println("entro else del post");
+                    outputLine = spark.get("/error404.html", methods.get("GET"));
+                }
             }
             out.println(outputLine);
             out.close();
